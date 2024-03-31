@@ -12,6 +12,8 @@ import java.util.Scanner;
  *
  * @author julio
  */
+
+// Link to my github: https://github.com/Julio-Malfa/CA3.
 public class CA3 {
     // Variables 
     private static Scanner scanner = new Scanner(System.in);
