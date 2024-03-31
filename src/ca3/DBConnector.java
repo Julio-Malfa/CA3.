@@ -103,7 +103,7 @@ public class DBConnector {
         csvWriter.close();
     }
         //Method to generate Course Report in TEXT File
-        void generateCourseTextReport() throws SQLException, IOException {
+    void generateCourseTextReport() throws SQLException, IOException {
         FileWriter textWriter = new FileWriter("course_report.txt");
         textWriter.write("Module Name                          | Program                      | Number of Students Enrolled   | Lecturer Name           | Room\n");
 
