@@ -6,13 +6,18 @@ package ca3;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  *
  * @author julio
  */
 public class CA3 {
-
+    // Variables 
+    private static Scanner scanner = new Scanner(System.in);
+    private static String userType;
+    private static String username;
+    private static String password;
     /**
      * @param args the command line arguments
      */
