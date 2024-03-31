@@ -140,4 +140,44 @@ public class DBConnector {
         textWriter.flush();
         textWriter.close();
     }
+    // Method to display student report 
+    void displayStudentReport() throws SQLException{        
+           //Connecting to Database
+           Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+           Statement stmt = conn.createStatement();
+           stmt.execute("USE ca3;");
+            
+            // Executing query
+            ResultSet rs = stmt.executeQuery("SELECT \n" +
+                                "    s.student_id,\n" +
+                                "    s.student_name,\n" +
+                                "    s.course_name AS program,\n" +
+                                "    m.module_name,\n" +
+                                "    g.grade\n" +
+                                "FROM \n" +
+                                "    students s\n" +
+                                "JOIN enrollments e ON s.student_id = e.student_id\n" +
+                                "JOIN modules m ON e.module_id = m.module_id\n" +
+                                "LEFT JOIN grades g ON e.enrollment_id = g.enrollment_id;");
+
+       // Printing out report header
+        System.out.println("Student ID | Student Name        | Program                            | Module Name                   | Grade");
+
+        // Printing out report
+        while (rs.next()) {
+            // Getting the variables from Database
+            int studentID = rs.getInt("student_id");
+            String studentName = rs.getString("student_name");
+            String program = rs.getString("program");
+            String moduleName = rs.getString("module_name");
+            Double grade = rs.getDouble("grade");
+        //  Adjust column widths based on the maximum length of data in each column
+        System.out.printf("%-11s| %-20s| %-35s| %-30s| %.1f\n",
+                studentID,
+                studentName,
+                program,
+                moduleName,
+                grade);
+    }   
+}  
 }
