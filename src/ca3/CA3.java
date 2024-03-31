@@ -4,6 +4,9 @@
  */
 package ca3;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  *
  * @author julio
@@ -13,8 +16,11 @@ public class CA3 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws SQLException, IOException{               
+        DBConnector db = new DBConnector();
+        db.displayCourseReport();    
+        System.out.println("End Course report...");       
+    
     }
     
 }
