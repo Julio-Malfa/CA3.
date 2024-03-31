@@ -1,0 +1,4 @@
+Module Name                          | Program                      | Number of Students Enrolled   | Lecturer Name           | Room
+Introduction to Programming           | BS in Computer Science      | 2                             | Emily Johnson            | Online    
+Database Management Systems           | BS in Information Technology| 1                             | Michael Williams         | Online    
+Software Development Lifecycle        | BS in Software Engineering  | 1                             | Sarah Brown              | Online    
