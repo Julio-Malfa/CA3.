@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -475,6 +476,39 @@ public class DBConnector {
         textWriter.flush();
         textWriter.close();
     }  
-    
-    
+    // Method that will be used by admin to change username and password from other users
+    public void manageUsers() throws SQLException {
+    // Get the username and password that will be changed
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter username that will change: ");
+    String currentUsername = scanner.nextLine();
+    System.out.print("Enter new username: ");
+    String newUsername = scanner.nextLine();
+    System.out.print("Enter new password: ");
+    String newPassword = scanner.nextLine();
+
+    // Connecting to the Database
+    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+        // Selecting the database
+        String useDatabaseQuery = "USE ca3";
+        try (PreparedStatement useDatabaseStmt = conn.prepareStatement(useDatabaseQuery)) {
+            useDatabaseStmt.executeUpdate();
+        }
+
+        // Update query to change username and password
+        String query = "UPDATE users SET username = ?, password = ? WHERE username = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, newUsername);
+            stmt.setString(2, newPassword);
+            stmt.setString(3, currentUsername);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Credentials changed successfully!");
+            } else {
+                System.out.println("Error no changes made.");
+            }
+        }
+    }
+}
 }
