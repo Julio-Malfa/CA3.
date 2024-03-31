@@ -511,4 +511,36 @@ public class DBConnector {
         }
     }
 }
+    void changeCredentials(String currentUser) throws SQLException {
+    // Get the new credentials from the user
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter your new username: ");
+    String newUsername = scanner.nextLine();
+    System.out.print("Enter your new password: ");
+    String newPassword = scanner.nextLine();
+
+    // Connecting to the Database
+    try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD)) {
+        // Selecting the database
+        String useDatabaseQuery = "USE ca3";
+        try (PreparedStatement useDatabaseStmt = conn.prepareStatement(useDatabaseQuery)) {
+            useDatabaseStmt.executeUpdate();
+        }
+
+        // Update query to change username and password
+        String query = "UPDATE users SET username = ?, password = ? WHERE username = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, newUsername);
+            stmt.setString(2, newPassword);
+            stmt.setString(3, currentUser);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Your credentials have been changed successfully!");
+            } else {
+                System.out.println("Username not found or no changes were made.");
+            }
+        }
+    }
+    }    
 }
