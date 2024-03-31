@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -22,6 +23,105 @@ public class DBConnector {
     private final String DB_URL = "jdbc:mysql://localhost";
     private final String USER = "pooa2024";
     private final String PASSWORD = "pooa2024";
+    
+    //Menu of Student's course reports (Display, Write CSV and Write TEXT)
+    public void courseReports() throws SQLException, IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose a Report to view:");
+        System.out.println("1. Course Report");
+        System.out.println("2. Student Report");
+        System.out.println("3. Lecturer Report");
+        int choice = scanner.nextInt();
+
+       switch (choice) {
+            case 1:
+                handleCourseReport();
+                break;
+            case 2:
+                handleStudentReport();
+                break;
+            case 3:
+                handleLecturerReport();
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                courseReports();
+                break;
+        }
+    }
+    // Method that cover options of displaying and generating the course report
+    private void handleCourseReport() throws SQLException, IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose format for Course Report:");
+        System.out.println("1. Display Course report");
+        System.out.println("2. Generate CSV Course report");
+        System.out.println("3. Generate Text Course report");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                displayCourseReport();
+                break;
+            case 2:
+                generateCourseCSVReport();
+                break;
+            case 3:
+                generateCourseTextReport();
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                courseReports();
+                break;
+        }
+    }
+    // Method that cover options of displaying and generating the student report
+    private void handleStudentReport() throws SQLException, IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose format for Student Report:");
+        System.out.println("1. Display Student report");
+        System.out.println("2. Generate CSV Student report");
+        System.out.println("3. Generate Text Student report");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                displayStudentReport();
+                break;
+            case 2:
+                generateStudentCSVReport();
+                break;
+            case 3:
+                generateStudentTextReport();
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                courseReports();
+                break;
+        }
+    }
+    // Method that cover options of displaying and generating the lecturer report
+    void handleLecturerReport() throws SQLException, IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choose format for Lecturer Report:");
+        System.out.println("1. Display Lecturer report");
+        System.out.println("2. Generate CSV Lecturer report");
+        System.out.println("3. Generate Text Lecturer report");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                displayLecturerReport();
+                break;
+            case 2:
+                generateLecturerCSVReport();
+                break;
+            case 3:
+                generateLecturerTextReport();
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                courseReports();
+                break;
+        }
+    }    
+
     
     void displayCourseReport() throws SQLException {
         // Connecting to Database 
