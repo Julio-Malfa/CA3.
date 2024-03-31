@@ -296,5 +296,45 @@ public class DBConnector {
                     numberOfStudents);
     }     
 }            
+    void generateLecturerCSVReport() throws SQLException, IOException{        
+           FileWriter csvWriter = new FileWriter("lecturer_report.csv");
+           csvWriter.append("Lecturer Name,Role,Module Name,Program,Students Enrolled\n");
+        
+           //Connecting to Database
+           Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+           Statement stmt = conn.createStatement();
+           stmt.execute("USE ca3;");
+            
+            // Executing query
+            ResultSet rs = stmt.executeQuery("SELECT \n" +
+                                            "    l.lecturer_name,\n" +
+                                            "    l.lecturer_role,\n" +
+                                            "    m.module_name,\n" +
+                                            "    c.program AS program,\n" +
+                                            "    COUNT(DISTINCT e.student_id) AS num_students_taking_module\n" +
+                                            "FROM \n" +
+                                            "    lecturer l\n" +
+                                            "JOIN modules m ON l.lecturer_name = m.lecturer_name\n" +
+                                            "JOIN courses c ON m.course_name = c.course_name\n" +
+                                            "LEFT JOIN enrollments e ON m.module_id = e.module_id\n" +
+                                            "GROUP BY \n" +
+                                            "    l.lecturer_id, m.module_id;");
+            
+            // Printing out report            
+            while (rs.next()) {
+                // Getting the variables from Database                
+                String lecturerName = rs.getString("lecturer_name");
+                String lecturerRole = rs.getString("lecturer_role");
+                String moduleName = rs.getString("module_name");
+                String program = rs.getString("program");
+                int numberOfStudents = rs.getInt("num_students_taking_module");
+                // Appending data to CSV file
+                csvWriter.append(String.format("%s,%s,%s,%s,%d\n", lecturerName, lecturerRole, moduleName, program, numberOfStudents));
+    }
+        // Closing writers
+        csvWriter.flush();
+        csvWriter.close();
+    }
+    
     
 }
