@@ -51,22 +51,18 @@ private static void displayMenu() throws IOException, SQLException {
     boolean running = true;
     while (running) {
         System.out.println("\n------ Menu ------");
-        
-        switch (userType) {
+                switch (userType) {
                 case "Admin":
                     System.out.println("1. Change Username/Password");
-                    System.out.println("2. Manage Users");
-                    
+                    System.out.println("2. Manage Users");                    
                     break;
                 case "Office":
                     System.out.println("1. Change Username/Password");
-                    System.out.println("2. View Reports");
-                    
+                    System.out.println("2. View Reports");                    
                     break;
                 case "Lecturer":
                     System.out.println("1. Change Username/Password");
-                    System.out.println("2. Lecturer Reports");
-                    
+                    System.out.println("2. Lecturer Reports");                    
                     break;
                 default:
                     break;
@@ -76,7 +72,6 @@ private static void displayMenu() throws IOException, SQLException {
 
             System.out.print("\nEnter your choice: ");
             int choice = scanner.nextInt();
-
             switch (choice) {
                 case 1:
                     changeCredentials();
@@ -118,6 +113,7 @@ private static void manageUsers() throws SQLException, IOException {
         DBConnector db = new DBConnector();
         db.manageUsers();    
 }
+
 // Method that will connect with DB and display options related to reports
 private static void courseReports() throws SQLException, IOException {        
         DBConnector db = new DBConnector();
@@ -131,10 +127,12 @@ private static void handleLecturerReport() throws SQLException, IOException {
         db.handleLecturerReport();  
         System.out.println("Generating lecturer report...");
 }
+
 // Methods to log out
 private static void logout() {
         System.out.println("Logging out. See you soon!");
         System.exit(0);
 }
+
 }
 
