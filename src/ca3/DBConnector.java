@@ -180,4 +180,42 @@ public class DBConnector {
                 grade);
     }   
 }  
+    void generateStudentCSVReport() throws SQLException, IOException {
+        FileWriter csvWriter = new FileWriter("student_report.csv");
+        csvWriter.append("Student ID,Student Name,Program,Module Name,Grade\n");
+        
+        // Connecting to Database
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+        Statement stmt = conn.createStatement();
+        stmt.execute("USE ca3;");
+            
+            // Executing query
+            ResultSet rs = stmt.executeQuery("SELECT \n" +
+                                "    s.student_id,\n" +
+                                "    s.student_name,\n" +
+                                "    s.course_name AS program,\n" +
+                                "    m.module_name,\n" +
+                                "    g.grade\n" +
+                                "FROM \n" +
+                                "    students s\n" +
+                                "JOIN enrollments e ON s.student_id = e.student_id\n" +
+                                "JOIN modules m ON e.module_id = m.module_id\n" +
+                                "LEFT JOIN grades g ON e.enrollment_id = g.enrollment_id;");
+
+        // Writing to CSV file
+        while (rs.next()) {
+        int studentID = rs.getInt("student_id");
+        String studentName = rs.getString("student_name");
+        String program = rs.getString("program");
+        String moduleName = rs.getString("module_name");
+        Double grade = rs.getDouble("grade");
+        csvWriter.append(String.format("%d,%s,%s,%s,%s\n", 
+        studentID, studentName, program, moduleName, grade));
+    }
+
+        // Closing writers
+        csvWriter.flush();
+        csvWriter.close();
+    }     
+    
 }
