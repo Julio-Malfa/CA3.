@@ -121,9 +121,9 @@ public class DBConnector {
                 courseReports();
                 break;
         }
-    }    
-
+    }   
     
+    // Method to display course report 
     void displayCourseReport() throws SQLException {
         // Connecting to Database 
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -203,7 +203,8 @@ public class DBConnector {
         csvWriter.flush();
         csvWriter.close();
     }
-        //Method to generate Course Report in TEXT File
+    
+    //Method to generate Course Report in TEXT File
     void generateCourseTextReport() throws SQLException, IOException {
         FileWriter textWriter = new FileWriter("course_report.txt");
         textWriter.write("Module Name                          | Program                      | Number of Students Enrolled   | Lecturer Name           | Room\n");
@@ -241,7 +242,8 @@ public class DBConnector {
         textWriter.flush();
         textWriter.close();
     }
-    // Method to display student report 
+    
+    // Method to display student report  
     void displayStudentReport() throws SQLException{        
            //Connecting to Database
            Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -279,8 +281,10 @@ public class DBConnector {
                 program,
                 moduleName,
                 grade);
-    }   
-}  
+        }   
+    }  
+    
+    // Method to generate student report in CSV File
     void generateStudentCSVReport() throws SQLException, IOException {
         FileWriter csvWriter = new FileWriter("student_report.csv");
         csvWriter.append("Student ID,Student Name,Program,Module Name,Grade\n");
@@ -319,6 +323,7 @@ public class DBConnector {
         csvWriter.close();
     }     
     
+    // Method to generate student report in Text File
     void generateStudentTextReport() throws SQLException, IOException {
         FileWriter textWriter = new FileWriter("student_report.txt");
         textWriter.write("Student ID | Student Name        | Program                            | Module Name                   | Grade\n");
@@ -354,7 +359,9 @@ public class DBConnector {
         // Closing writers
         textWriter.flush();
         textWriter.close();
-}
+    }
+    
+    // Method to display lecturer report  
     void displayLecturerReport() throws SQLException{        
            //Connecting to Database
            Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
@@ -395,8 +402,10 @@ public class DBConnector {
                     moduleName,
                     program,
                     numberOfStudents);
-    }     
-}            
+        }     
+    }    
+    
+    // Method to generate lecturer report in CSV File
     void generateLecturerCSVReport() throws SQLException, IOException{        
            FileWriter csvWriter = new FileWriter("lecturer_report.csv");
            csvWriter.append("Lecturer Name,Role,Module Name,Program,Students Enrolled\n");
@@ -437,6 +446,7 @@ public class DBConnector {
         csvWriter.close();
     }
     
+    // Method to generate lecturer report in Text File
     void generateLecturerTextReport() throws SQLException, IOException{        
            FileWriter textWriter = new FileWriter("lecturer_report.txt");
            textWriter.write("Lecturer Name     | Role                | Module Name                        | Program                          | Students Enrolled\n");
@@ -510,7 +520,9 @@ public class DBConnector {
             }
         }
     }
-}
+    }
+    
+    // Method that will allow to change their own user and password
     void changeCredentials(String currentUser) throws SQLException {
     // Get the new credentials from the user
     Scanner scanner = new Scanner(System.in);
