@@ -67,7 +67,7 @@ public class DBConnector {
     
     //Method to generate Course Report in CSV File
     void generateCourseCSVReport() throws SQLException, IOException {
-        FileWriter csvWriter = new FileWriter("report.csv");
+        FileWriter csvWriter = new FileWriter("course_report.csv");
         csvWriter.append("Module Name,Program,Number of Students Enrolled,Lecturer Name,Room\n");
 
         // Connecting to Database
@@ -102,5 +102,42 @@ public class DBConnector {
         csvWriter.flush();
         csvWriter.close();
     }
-    
+        //Method to generate Course Report in TEXT File
+        void generateCourseTextReport() throws SQLException, IOException {
+        FileWriter textWriter = new FileWriter("course_report.txt");
+        textWriter.write("Module Name                          | Program                      | Number of Students Enrolled   | Lecturer Name           | Room\n");
+
+        // Connecting to Database
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+        Statement stmt = conn.createStatement();
+        stmt.execute("USE ca3;");
+
+        // Executing query
+        ResultSet rs = stmt.executeQuery("SELECT \n" +
+                "    m.module_name,\n" +
+                "    c.program AS program,\n" +
+                "    COUNT(e.student_id) AS num_students_enrolled,\n" +
+                "    m.lecturer_name,\n" +
+                "    COALESCE(m.room_name, 'Online') AS room_name\n" +
+                "FROM \n" +
+                "    modules m\n" +
+                "JOIN courses c ON m.course_name = c.course_name\n" +
+                "LEFT JOIN enrollments e ON m.module_id = e.module_id\n" +
+                "GROUP BY \n" +
+                "    m.module_id;");
+
+        // Writing to text file
+        while (rs.next()) {
+            String moduleName = rs.getString("module_name");
+            String program = rs.getString("program");
+            int numStudentsEnrolled = rs.getInt("num_students_enrolled");
+            String lecturerName = rs.getString("lecturer_name");
+            String roomName = rs.getString("room_name");
+            textWriter.write(String.format("%-38s| %-28s| %-30d| %-25s| %-10s\n",
+            moduleName, program, numStudentsEnrolled, lecturerName, roomName));
+        }
+        // Closing writers
+        textWriter.flush();
+        textWriter.close();
+    }
 }

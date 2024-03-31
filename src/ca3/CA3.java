@@ -18,7 +18,7 @@ public class CA3 {
      */
     public static void main(String[] args) throws SQLException, IOException{               
         DBConnector db = new DBConnector();
-        db.generateCourseCSVReport();    
+        db.generateCourseTextReport();    
         System.out.println("End Course report...");           
     }
     
