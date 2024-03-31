@@ -218,4 +218,41 @@ public class DBConnector {
         csvWriter.close();
     }     
     
+    void generateStudentTextReport() throws SQLException, IOException {
+        FileWriter textWriter = new FileWriter("student_report.txt");
+        textWriter.write("Student ID | Student Name        | Program                            | Module Name                   | Grade\n");
+
+        // Connecting to Database
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+        Statement stmt = conn.createStatement();
+        stmt.execute("USE ca3;");
+
+            // Executing query
+            ResultSet rs = stmt.executeQuery("SELECT \n" +
+                    "    s.student_id,\n" +
+                    "    s.student_name,\n" +
+                    "    s.course_name AS program,\n" +
+                    "    m.module_name,\n" +
+                    "    g.grade\n" +
+                    "FROM \n" +
+                    "    students s\n" +
+                    "JOIN enrollments e ON s.student_id = e.student_id\n" +
+                    "JOIN modules m ON e.module_id = m.module_id\n" +
+                    "LEFT JOIN grades g ON e.enrollment_id = g.enrollment_id;");
+
+        // Writing to text file
+        while (rs.next()) {
+        int studentID = rs.getInt("student_id");
+        String studentName = rs.getString("student_name");
+        String program = rs.getString("program");
+        String moduleName = rs.getString("module_name");
+        Double grade = rs.getDouble("grade");
+        textWriter.write(String.format("%-11d| %-20s| %-35s| %-30s| %.1f\n", studentID, studentName, program, moduleName, grade));
+    }
+
+        // Closing writers
+        textWriter.flush();
+        textWriter.close();
+}
+    
 }
